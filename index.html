@@ -7,8 +7,9 @@
   <meta name="description" content="Wenhao XU — rule alignment research and open-source agent skills. Explore the terminal and a small causal-path illustration.">
   <title>K-kiron — Research terminal</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=f8e8495">
-  <script src="./app.js?v=f8e8495" defer></script>
+  <meta name="assistant-endpoint" content="">
+  <link rel="stylesheet" href="./style.css?v=assistant1">
+  <script src="./app.js?v=assistant1" type="module"></script>
 </head>
 <body>
 <a class="skip" href="#command">Skip to terminal</a>
@@ -29,8 +30,11 @@
         <nav class="command-bar" aria-label="Run a terminal command">
           <button type="button" data-command="whoami">whoami</button><button type="button" data-command="research">research</button><button type="button" data-command="skills">skills</button><button type="button" data-command="help">help</button>
         </nav>
-        <div id="output" class="output" tabindex="0" role="region" aria-label="Terminal output" aria-live="polite" aria-relevant="additions"><div class="entry"><div class="command-line">visitor@k-kiron <span>~ $</span> whoami</div><p>I'm Wenhao XU. I study whether language models actually use the rules we give them.</p><p>I also build open-source skills for inspecting, replaying, and challenging the output of agents.</p><p class="hint">Try <b>research</b>, <b>skills</b>, or <b>help</b>.<br>Click a command above, or type below.</p></div></div>
-        <form id="command-form" class="command-form" autocomplete="off"><label for="command"><span>~ $</span><span class="sr-only">Terminal command</span></label><input id="command" name="command" type="text" placeholder="type a command…" autocomplete="off" spellcheck="false" autocapitalize="off" maxlength="180" aria-describedby="command-hint"><button type="submit" aria-label="Run command">↵</button></form>
+        <div class="assistant-bar"><span id="assistant-status" role="status">AI GUIDE / not connected</span><button id="stop-answer" type="button" hidden>Stop</button><button id="new-conversation" type="button">New chat</button></div>
+        <div id="output" class="output" tabindex="0" role="region" aria-label="Terminal output" aria-live="polite" aria-relevant="additions text"><div class="entry"><div class="command-line">visitor@k-kiron <span>~ $</span> whoami</div><p>I'm Wenhao XU. I study whether language models actually use the rules we give them.</p><p>I also build open-source skills for inspecting, replaying, and challenging the output of agents.</p><p class="hint">Ask the AI guide about my work, or try <b>research</b>, <b>skills</b>, or <b>help</b>.</p></div></div>
+        <div class="question-suggestions" aria-label="Example questions"><button type="button" data-question="What is rule alignment?">Explain rule alignment</button><button type="button" data-question="Which skill helps me test a bug fix?">Find a skill</button></div>
+        <form id="command-form" class="command-form" autocomplete="off"><label for="command"><span>~ $</span><span class="sr-only">Ask a question or type a command</span></label><input id="command" name="command" type="text" placeholder="ask a question…" autocomplete="off" spellcheck="false" autocapitalize="off" maxlength="1200" aria-describedby="command-hint assistant-privacy"><button type="submit" aria-label="Send question or command">↵</button></form>
+        <details class="assistant-privacy" id="assistant-privacy"><summary>About this AI guide</summary><p>Questions and the last two exchanges are sent to Cloudflare Workers AI. This site does not save chat text; context stays in this tab until you clear it or reload. Daily salted network hashes and request counts expire at 00:00 UTC. The shared free allowance is limited. The guide uses curated public facts, may make mistakes, and does not speak for Wenhao. <a href="https://developers.cloudflare.com/workers-ai/platform/data-usage/">Cloudflare data usage ↗</a></p></details>
         <p id="command-hint" class="terminal-foot">Tab to complete <span>↑ ↓ history</span><span>No shell. Just exploration.</span></p>
         <noscript><p class="noscript">Enable JavaScript for the terminal and circuit. <a href="https://github.com/K-kiron#--skills">Explore my skills on GitHub.</a></p></noscript>
       </section>

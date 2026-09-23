@@ -35,6 +35,20 @@ h1 span{color:var(--green)}
 .command-bar button:hover,.command-bar button:focus-visible{border-color:var(--green);color:var(--green)}
 .output{height:421px;overflow:auto;overscroll-behavior:contain;scrollbar-color:#3c5244 transparent;padding:22px 24px;font:16px/1.7 var(--mono);flex:1 1 0;min-height:340px}
 .entry p{margin:10px 0}
+.assistant-bar{display:flex;align-items:center;gap:12px;padding:12px 24px 0;font:11px var(--mono);color:var(--green)}
+.assistant-bar button{border:0;background:none;color:var(--muted);font:12px var(--mono);padding:6px 0}
+#new-conversation{margin-left:auto}
+.assistant-bar button:hover{color:var(--green)}
+.assistant-answer{white-space:pre-wrap;overflow-wrap:anywhere}
+.assistant-sources,.assistant-note{font-size:12px;color:var(--muted)}
+.assistant-action{border:1px solid #60724b;background:#15201a;border-radius:4px;padding:10px 12px;font:13px/1.5 var(--mono);color:var(--green);text-align:left;max-width:100%}
+.assistant-action:disabled{color:var(--muted)}
+.question-suggestions{display:flex;flex-wrap:wrap;gap:16px;padding:6px 24px 12px}
+.question-suggestions button{background:none;border:0;border-bottom:1px dashed #456038;padding:4px 0;color:var(--green);font:12px/1.5 var(--mono)}
+.assistant-privacy{padding:0 24px 12px;color:var(--muted);font:11px/1.6 var(--mono)}
+.assistant-privacy summary{cursor:pointer;width:fit-content}
+.assistant-privacy p{margin:8px 0;max-width:58ch}
+.assistant-privacy a{text-decoration:underline}
 .command-line{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
 .command-line span{color:var(--green);padding:0 4px}
 .hint{color:var(--muted)}
