@@ -1,4 +1,4 @@
-'use strict';
+import { createAssistant } from './assistant.js?v=assistant1';
 
 const skills = [
   { name: 'RageClick', description: 'Break a local web app like an impatient user. Replay the failure.', url: 'https://github.com/K-kiron/RageClick', demo: 'https://k-kiron.github.io/RageClick/', action: 'Watch the demo' },
@@ -17,6 +17,18 @@ let draft = '';
 let path = 'rule';
 let removed = false;
 let selectedNode = 'rule';
+const assistant = createAssistant({
+  endpoint: document.querySelector('meta[name="assistant-endpoint"]').content,
+  entry, text, link,
+  clearHistory: () => { history.length = 0; historyIndex = 0; draft = ''; input.value = ''; },
+  getCircuit: () => ({ path, removed }),
+  applyAction: action => {
+    if (action.path) path = action.path;
+    removed = action.removed;
+    selectedNode = path === 'rule' ? 'apply' : 'match';
+    renderCircuit();
+  },
+});
 
 function text(parent, tag, value, className) {
   const element = document.createElement(tag);
@@ -40,12 +52,14 @@ function entry(command) {
 function run(raw) {
   const command = raw.trim().replace(/\s+/g, ' ').toLowerCase();
   if (!command) return;
+  if (raw.trim().length > 1200) return;
+  assistant.cancel();
   history.push(raw.trim());
   if (history.length > 100) history.shift();
   historyIndex = history.length;
   draft = '';
   input.value = '';
-  if (command === 'clear') { output.replaceChildren(); return; }
+  if (command === 'clear') { assistant.clear(); return; }
   const block = entry(raw.trim());
   if (command === 'whoami') {
     text(block, 'p', "I'm Wenhao XU, an AI/ML PhD student at Université de Montréal and Mila, working on rule alignment for language models.");
@@ -67,7 +81,7 @@ function run(raw) {
       text(item, 'span', skill.description);
       if (skill.demo) link(item, `${skill.action} →`, skill.demo);
     });
-  } else if (command.startsWith('open ')) {
+  } else if ((commands.includes(command) && command.startsWith('open ')) || command === 'open prove-it') {
     const name = command.slice(5);
     const skill = skills.find(item => item.name.toLowerCase() === name || (name === 'prove-it' && item.name === 'ProveIt'));
     if (skill) { text(block, 'p', skill.description); link(block, `Open ${skill.name} on GitHub ↗`, skill.url); }
@@ -78,6 +92,7 @@ function run(raw) {
     link(block, 'ReviewBudget ↗', 'https://github.com/K-kiron/ReviewBudget');
     text(block, 'p', 'Pull request verification planning with named checks, costs, and budgets.');
   } else if (command === 'help') {
+    text(block, 'p', 'Ask a question in English or Chinese. Follow up naturally; use New chat to start fresh. Answers use curated public facts and may be inaccurate.', 'hint');
     const list = document.createElement('ul'); block.append(list);
     [ ['whoami', 'Researcher and builder, Montreal.'], ['research', 'The questions behind my work.'], ['skills', 'Five skills, their repositories, and demos.'], ['open <skill>', 'Get a link to a skill repository.'], ['projects', 'Other open-source work.'], ['trace rule / trace shortcut', 'Switch the illustrative circuit path.'], ['ablate', 'Remove or restore the rule.'], ['reset', 'Reset the circuit.'], ['clear', 'Clear this terminal.'] ].forEach(([name, description])=>{const item=text(list,'li',name);text(item,'span',description);});
   } else if (command === 'trace rule' || command === 'trace shortcut') {
@@ -87,7 +102,7 @@ function run(raw) {
     removed = !removed; renderCircuit(); text(block, 'p', resultText(), 'hint');
   } else if (command === 'reset') {
     path = 'rule'; removed = false; selectedNode = 'rule'; renderCircuit(); text(block, 'p', 'Circuit reset. Rule present → decision A.', 'hint');
-  } else text(block, 'p', `Unknown command: ${raw.trim()}. Try help.`, 'hint');
+  } else assistant.ask(raw.trim(), block);
   output.scrollTop = 0;
 }
 
@@ -121,6 +136,7 @@ function renderCircuit() {
 
 document.querySelector('#command-form').addEventListener('submit',event=>{event.preventDefault();run(input.value);});
 document.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>run(button.dataset.command)));
+document.querySelectorAll('[data-question]').forEach(button=>button.addEventListener('click',()=>run(button.dataset.question)));
 document.querySelectorAll('button[data-path]').forEach(button=>button.addEventListener('click',()=>{path=button.dataset.path;selectedNode=path==='rule'?'apply':'match';renderCircuit();}));
 document.querySelectorAll('[data-node]').forEach(button=>button.addEventListener('click',()=>{selectedNode=button.dataset.node;renderCircuit();}));
 document.querySelector('#remove-rule').addEventListener('click',()=>{removed=!removed;renderCircuit();});
