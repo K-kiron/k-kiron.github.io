@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b100e">
+  <meta name="description" content="Wenhao XU — rule alignment research and open-source agent skills. Explore the terminal and a small causal-path illustration.">
+  <title>K-kiron — Research terminal</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#command">Skip to terminal</a>
+<div class="workspace">
+  <header class="topbar">
+    <a class="wordmark" href="https://github.com/K-kiron" aria-label="K-kiron on GitHub">K<span>/</span>KIRON</a>
+    <span class="top-label">WENHAO XU <span class="muted">/ MONTREAL</span></span>
+    <a class="back-link" href="https://github.com/K-kiron">GitHub ↗</a>
+  </header>
+  <main>
+    <div class="intro">
+      <div><p class="eyebrow">RESEARCH × OPEN SOURCE</p><h1>Understand the model.<br><span>Build the missing tool.</span></h1></div>
+      <p class="identity">AI/ML PhD student<br>Université de Montréal &amp; Mila<br><strong>Rule alignment for language models.</strong></p>
+    </div>
+    <div class="workbench">
+      <section class="terminal panel" aria-labelledby="terminal-title">
+        <div class="panel-top"><h2 id="terminal-title"><span class="prompt-mark">&gt;_</span> k-kiron<span class="muted">: ~</span></h2><span class="secondary">01 / TERMINAL</span></div>
+        <nav class="command-bar" aria-label="Run a terminal command">
+          <button type="button" data-command="whoami">whoami</button><button type="button" data-command="research">research</button><button type="button" data-command="skills">skills</button><button type="button" data-command="help">help</button>
+        </nav>
+        <div id="output" class="output" tabindex="0" role="region" aria-label="Terminal output" aria-live="polite" aria-relevant="additions"><div class="entry"><div class="command-line">visitor@k-kiron <span>~ $</span> whoami</div><p>I'm Wenhao XU. I study whether language models actually use the rules we give them.</p><p>I also build open-source skills for inspecting, replaying, and challenging the output of agents.</p><p class="hint">Try <b>research</b>, <b>skills</b>, or <b>help</b>.<br>Click a command above, or type below.</p></div></div>
+        <form id="command-form" class="command-form" autocomplete="off"><label for="command"><span>~ $</span><span class="sr-only">Terminal command</span></label><input id="command" name="command" type="text" placeholder="type a command…" autocomplete="off" spellcheck="false" autocapitalize="off" maxlength="180" aria-describedby="command-hint"><button type="submit" aria-label="Run command">↵</button></form>
+        <p id="command-hint" class="terminal-foot">Tab to complete <span>↑ ↓ history</span><span>No shell. Just exploration.</span></p>
+        <noscript><p class="noscript">Enable JavaScript for the terminal and circuit. <a href="https://github.com/K-kiron#--skills">Explore my skills on GitHub.</a></p></noscript>
+      </section>
+      <section class="circuit panel" aria-labelledby="circuit-title">
+        <div class="panel-top"><h2 id="circuit-title">Trace the why<span class="accent">_</span></h2><span class="secondary">02 / SANDBOX</span></div>
+        <div class="circuit-intro"><h3>Same answer. Different cause.</h3><p>Follow a path, then remove the rule.</p></div>
+        <div class="path-switch" role="group" aria-label="Choose an illustrative decision path"><button type="button" data-path="rule" aria-pressed="true">Rule-driven</button><button type="button" data-path="shortcut" aria-pressed="false">Shortcut-driven</button></div>
+        <div class="graph" id="graph" data-path="rule">
+          <div class="graph-labels" aria-hidden="true"><span>INPUT</span><span>PROCESS</span><span>OUTPUT</span></div>
+          <svg class="wires" viewBox="0 0 600 270" preserveAspectRatio="none" aria-hidden="true">
+            <path class="wire rule-wire" d="M90 54C190 54 210 90 300 90S410 135 510 135"/>
+            <path class="wire context-wire" d="M90 135C190 135 210 90 300 90"/>
+            <path class="wire shortcut-wire" d="M90 216C190 216 210 180 300 180S410 135 510 135"/>
+            <path class="wire context-wire" d="M90 135C190 135 210 180 300 180"/>
+            <path class="pulse rule-pulse" d="M90 54C190 54 210 90 300 90S410 135 510 135"/>
+            <path class="pulse shortcut-pulse" d="M90 216C190 216 210 180 300 180S410 135 510 135"/>
+          </svg>
+          <button class="node node-rule" type="button" data-node="rule" aria-pressed="true"><span class="node-dot">R</span><span>Rule</span></button>
+          <button class="node node-context" type="button" data-node="context" aria-pressed="false"><span class="node-dot">C</span><span>Context</span></button>
+          <button class="node node-cue" type="button" data-node="cue" aria-pressed="false"><span class="node-dot">S</span><span>Surface cue</span></button>
+          <button class="node node-apply" type="button" data-node="apply" aria-pressed="false"><span class="node-dot">ƒ</span><span>Apply rule</span></button>
+          <button class="node node-match" type="button" data-node="match" aria-pressed="false"><span class="node-dot">≈</span><span>Match pattern</span></button>
+          <button class="node node-answer" type="button" data-node="answer" aria-pressed="false"><span class="node-dot">A</span><span id="answer-label">Decision A</span></button>
+        </div>
+        <div class="inspector" aria-live="polite"><span id="node-title" class="inspector-label">RULE / INPUT</span><p id="node-description">An explicit instruction. Does it change the decision, or is the model following a shortcut?</p></div>
+        <div class="intervention"><button id="remove-rule" type="button" aria-pressed="false"><span aria-hidden="true">⊘</span> Remove rule</button><p id="result" role="status">Rule present → decision A</p></div>
+        <p class="circuit-foot">Illustrative circuit · not a trained model or research result.</p>
+      </section>
+    </div>
+    <footer><span>AI Safety / Alignment / Trustworthy AI / Mechanistic Interpretability</span><a href="https://www.linkedin.com/in/k-kiron/">LinkedIn ↗</a></footer>
+  </main>
+</div>
+</body>
+</html>
