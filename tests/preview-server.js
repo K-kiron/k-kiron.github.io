@@ -18,7 +18,7 @@ const server = http.createServer(async (request, response) => {
   const file = route === '/' ? 'index.html' : route.slice(1);
   if (!Object.hasOwn(types, file)) { response.writeHead(404).end(); return; }
   let content = await readFile(new URL(file, root), 'utf8');
-  if (file === 'index.html') content = content.replace('name="assistant-endpoint" content=""', 'name="assistant-endpoint" content="http://127.0.0.1:8773/chat"');
+  if (file === 'index.html') content = content.replace(/name="assistant-endpoint" content="[^"]*"/, 'name="assistant-endpoint" content="http://127.0.0.1:8773/chat"');
   response.writeHead(200, { 'Content-Type': types[file] + '; charset=utf-8', 'Cache-Control': 'no-store' });
   response.end(content);
 });

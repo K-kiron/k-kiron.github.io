@@ -83,6 +83,13 @@ test('malformed JSON answers fail, while unknown sources and actions are discard
   assert.deepEqual(validateAnswer({ response: JSON.stringify({ answer: '<script>literal text</script>', source_ids: ['profile', 'profile', '__proto__', 'https://evil.example'], action: 'javascript:alert(1)' }) }), { answer: '<script>literal text</script>', source_ids: ['profile'], action: 'none' });
 });
 
+test('chat-completion answers are validated and truncated completions are rejected', () => {
+  const content = JSON.stringify({ answer: '规则对齐关注模型是否使用给定规则。', source_ids: ['profile'], action: 'trace_rule' });
+  assert.deepEqual(validateAnswer({ choices: [{ finish_reason: 'stop', message: { content } }] }), JSON.parse(content));
+  assert.throws(() => validateAnswer({ choices: [{ finish_reason: 'length', message: { content } }] }));
+  assert.throws(() => validateAnswer({ choices: [{ finish_reason: 'stop', message: { content: null, reasoning_content: 'Not a final answer.' } }] }));
+});
+
 // A serialized storage double exercises quota accounting; runtime.test.js covers real SQLite storage.
 class Storage {
   data = new Map();
