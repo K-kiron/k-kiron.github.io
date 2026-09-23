@@ -34,7 +34,6 @@ h1 span{color:var(--green)}
 .command-bar button{border:1px solid var(--line);background:transparent;border-radius:4px;padding:7px 12px;font:14px var(--mono);color:var(--muted)}
 .command-bar button:hover,.command-bar button:focus-visible{border-color:var(--green);color:var(--green)}
 .output{height:421px;overflow:auto;overscroll-behavior:contain;scrollbar-color:#3c5244 transparent;padding:22px 24px;font:16px/1.7 var(--mono);flex:1 1 0;min-height:340px}
-.entry+.entry{margin-top:24px;padding-top:22px;border-top:1px dashed var(--line)}
 .entry p{margin:10px 0}
 .command-line{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
 .command-line span{color:var(--green);padding:0 4px}

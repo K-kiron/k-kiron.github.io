@@ -34,8 +34,7 @@ function entry(command) {
   const block = document.createElement('div');
   block.className = 'entry';
   text(block, 'div', `visitor@k-kiron ~ $ ${command}`, 'command-line');
-  output.append(block);
-  while (output.children.length > 20) output.firstElementChild.remove();
+  output.replaceChildren(block);
   return block;
 }
 function run(raw) {
@@ -89,7 +88,7 @@ function run(raw) {
   } else if (command === 'reset') {
     path = 'rule'; removed = false; selectedNode = 'rule'; renderCircuit(); text(block, 'p', 'Circuit reset. Rule present → decision A.', 'hint');
   } else text(block, 'p', `Unknown command: ${raw.trim()}. Try help.`, 'hint');
-  output.scrollTop = output.scrollHeight;
+  output.scrollTop = 0;
 }
 
 function resultText() {
