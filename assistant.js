@@ -1,4 +1,4 @@
-import { sources, actions } from './profile-data.js?v=assistant1';
+import { sources, actions } from './profile-data.js?v=building1';
 
 export function createAssistant({ endpoint, entry, text, link, getCircuit, applyAction, clearHistory }) {
   const output = document.querySelector('#output');
@@ -25,7 +25,7 @@ export function createAssistant({ endpoint, entry, text, link, getCircuit, apply
 
   async function ask(question, block) {
     if (!ready) {
-      text(block, 'p', 'The AI guide is not connected yet. Explore whoami, research, skills, or help.', 'hint');
+      text(block, 'p', 'The AI guide is not connected yet. Explore whoami, research, building, skills, or help.', 'hint');
       return;
     }
     const controller = new AbortController();

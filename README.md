@@ -6,6 +6,8 @@ Personal research and open-source homepage for Wenhao XU, an AI/ML PhD student a
 
 Explore research interests and open-source skills through a small interactive terminal. Exact commands run locally. When an assistant endpoint is configured, other input goes to a Cloudflare Workers AI guide with short conversational context and curated public references. Suggested circuit actions require a click.
 
+Use `building` for current projects, `skills` for agent skills, and `open <project>` for a repository link. `projects` remains an alias for `building`. These commands support Tab completion; `#building` opens the project list directly. Project descriptions and guide references share the curated data in `profile-data.js`. Changes there require publishing the frontend and redeploying the Worker to refresh its bundled facts.
+
 The circuit illustrates the difference between rule-driven and shortcut-driven decisions; it is not a trained model or a research result. The guide does not speak for Wenhao, has no access to private notes or live repository contents, and can make mistakes.
 
 ## Development

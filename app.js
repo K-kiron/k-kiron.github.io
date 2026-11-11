@@ -1,4 +1,5 @@
-import { createAssistant } from './assistant.js?v=assistant1';
+import { createAssistant } from './assistant.js?v=building1';
+import { sources } from './profile-data.js?v=building1';
 
 const skills = [
   { name: 'RageClick', description: 'Break a local web app like an impatient user. Replay the failure.', url: 'https://github.com/K-kiron/RageClick', demo: 'https://k-kiron.github.io/RageClick/', action: 'Watch the demo' },
@@ -7,7 +8,9 @@ const skills = [
   { name: 'PaperCourt', description: 'Trace empirical ML claims to inspectable evidence.', url: 'https://github.com/K-kiron/PaperCourt' },
   { name: 'ProveIt', description: 'Check that a regression test fails without the fix.', url: 'https://github.com/K-kiron/ProveIt' },
 ];
-const commands = ['whoami', 'research', 'skills', 'projects', 'help', 'trace rule', 'trace shortcut', 'ablate', 'reset', 'clear', ...skills.map(skill => `open ${skill.name.toLowerCase()}`)];
+const projects = ['dutyloop', 'runward', 'contextveil', 'taxagent', 'reviewbudget'].map(id => ({ name: sources[id].label, description: sources[id].description, url: sources[id].url }));
+const repositories = [...projects, ...skills];
+const commands = ['whoami', 'research', 'building', 'skills', 'projects', 'help', 'trace rule', 'trace shortcut', 'ablate', 'reset', 'clear', ...repositories.map(project => `open ${project.name.toLowerCase()}`)];
 const output = document.querySelector('#output');
 const input = document.querySelector('#command');
 const graph = document.querySelector('#graph');
@@ -72,10 +75,11 @@ function run(raw) {
     text(block, 'p', 'A correct answer is not enough to show that a model used the intended rule. I am interested in how models interpret rules, how rules influence decisions, and how we can investigate that influence.');
     text(block, 'p', 'AI Safety · Alignment · Trustworthy AI · Mechanistic Interpretability');
     text(block, 'p', 'Try the circuit: compare the two paths, then remove the rule. This is a small illustration of the question, not an experiment on a trained model.', 'hint');
-  } else if (command === 'skills' || command === 'ls') {
-    text(block, 'p', 'FIVE OPEN-SOURCE AGENT SKILLS', 'output-title');
+  } else if (['building', 'projects', 'skills', 'ls'].includes(command)) {
+    const showSkills = command === 'skills' || command === 'ls';
+    text(block, 'p', showSkills ? 'FIVE OPEN-SOURCE AGENT SKILLS' : 'FIVE OPEN-SOURCE PROJECTS', 'output-title');
     const list = document.createElement('ul'); block.append(list);
-    skills.forEach(skill => {
+    (showSkills ? skills : projects).forEach(skill => {
       const item = document.createElement('li'); list.append(item);
       link(item, `${skill.name} ↗`, skill.url);
       text(item, 'span', skill.description);
@@ -83,18 +87,13 @@ function run(raw) {
     });
   } else if ((commands.includes(command) && command.startsWith('open ')) || command === 'open prove-it') {
     const name = command.slice(5);
-    const skill = skills.find(item => item.name.toLowerCase() === name || (name === 'prove-it' && item.name === 'ProveIt'));
+    const skill = repositories.find(item => item.name.toLowerCase() === name || (name === 'prove-it' && item.name === 'ProveIt'));
     if (skill) { text(block, 'p', skill.description); link(block, `Open ${skill.name} on GitHub ↗`, skill.url); }
-    else text(block, 'p', 'Unknown project. Run skills to see the available repositories.', 'hint');
-  } else if (command === 'projects') {
-    link(block, 'TaxAgent ↗', 'https://github.com/K-kiron/TaxAgent');
-    text(block, 'p', 'Local tax preparation for bounded Quebec and federal salary/student cases.');
-    link(block, 'ReviewBudget ↗', 'https://github.com/K-kiron/ReviewBudget');
-    text(block, 'p', 'Pull request verification planning with named checks, costs, and budgets.');
+    else text(block, 'p', 'Unknown project. Run building or skills to see the available repositories.', 'hint');
   } else if (command === 'help') {
     text(block, 'p', 'Ask a question in English or Chinese. Follow up naturally; use New chat to start fresh. Answers use curated public facts and may be inaccurate.', 'hint');
     const list = document.createElement('ul'); block.append(list);
-    [ ['whoami', 'Researcher and builder, Montreal.'], ['research', 'The questions behind my work.'], ['skills', 'Five skills, their repositories, and demos.'], ['open <skill>', 'Get a link to a skill repository.'], ['projects', 'Other open-source work.'], ['trace rule / trace shortcut', 'Switch the illustrative circuit path.'], ['ablate', 'Remove or restore the rule.'], ['reset', 'Reset the circuit.'], ['clear', 'Clear this terminal.'] ].forEach(([name, description])=>{const item=text(list,'li',name);text(item,'span',description);});
+    [ ['whoami', 'Researcher and builder, Montreal.'], ['research', 'The questions behind my work.'], ['building', 'Current projects and their repositories.'], ['skills', 'Five skills, their repositories, and demos.'], ['open <project>', 'Get a link to any listed project or skill.'], ['projects', 'Alias for building.'], ['trace rule / trace shortcut', 'Switch the illustrative circuit path.'], ['ablate', 'Remove or restore the rule.'], ['reset', 'Reset the circuit.'], ['clear', 'Clear this terminal.'] ].forEach(([name, description])=>{const item=text(list,'li',name);text(item,'span',description);});
   } else if (command === 'trace rule' || command === 'trace shortcut') {
     path = command.split(' ')[1]; selectedNode = path === 'rule' ? 'apply' : 'match'; renderCircuit();
     text(block, 'p', `Tracing the ${path === 'rule' ? 'rule-driven' : 'shortcut-driven'} path. Try ablate to remove the rule.`, 'hint');
@@ -149,4 +148,4 @@ input.addEventListener('keydown',event=>{
   if(event.key==='ArrowDown' && history.length){event.preventDefault();historyIndex=Math.min(history.length,historyIndex+1);input.value=historyIndex===history.length?draft:history[historyIndex];}
 });
 renderCircuit();
-if(['research','skills','projects','help'].includes(location.hash.slice(1)))run(location.hash.slice(1));
+if(['research','building','skills','projects','help'].includes(location.hash.slice(1)))run(location.hash.slice(1));
